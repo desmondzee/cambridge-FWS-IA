@@ -14,7 +14,7 @@ def run():
     # Get sorted list of (station, distance) tuples
     sorted_stations = stations_by_distance(stations, p)
     
-    # Format as (station name, town, distance) tuples
+    # Format as (station name, town, distance) tuples to the task.
     print([(s.name, s.town, d) for s, d in sorted_stations[:10]])
     print([(s.name, s.town, d) for s, d in sorted_stations[-10:]])
 
