@@ -10,7 +10,6 @@ from floodsystem.station import MonitoringStation
 def test_stations_by_distance():
     """Test stations_by_distance function for task 1B"""
     
-    # Create test stations with known coordinates
     s1 = MonitoringStation(
         station_id="test-s-1",
         measure_id="test-m-1",
@@ -46,25 +45,25 @@ def test_stations_by_distance():
     
     result = stations_by_distance(stations, p)
     
-    # Check that result is a list
+    # check that result is a list
     assert isinstance(result, list)
     
-    # Check that each element is a tuple of (station, distance)
+    #  is a tuple of (station, distance)???
     assert len(result) == 3
     for item in result:
         assert isinstance(item, tuple)
         assert len(item) == 2
         assert isinstance(item[0], MonitoringStation) #checking datatype
         assert isinstance(item[1], float)
-        assert item[1] >= 0  #Distance should be non-negative
+        assert item[1] >= 0  # should be non-negative
     
-    # Verify all stations are in the result
+    #  all stations are in the result?
     result_stations = [s for s, _ in result]
     assert s1 in result_stations
     assert s2 in result_stations
     assert s3 in result_stations
     
-    # Check distance to match: s1 < s2 < s3 from Cambridge
+    # Check distance to match: s1 < s2 < s3 from Camb
     assert result[0][0] == s1  # Closest
     assert result[1][0] == s2  # Second
     assert result[2][0] == s3  # Furthest
@@ -73,7 +72,6 @@ def test_stations_by_distance():
 def test_rivers_with_station():
     """Test rivers_with_station function for task 1D"""
     
-    # Create test stations with different rivers
     s1 = MonitoringStation(
         station_id="test-s-1",
         measure_id="test-m-1",
@@ -100,7 +98,7 @@ def test_rivers_with_station():
         label="Station 3",
         coord=(52.2, 0.2),
         typical_range=(0.0, 1.0),
-        river="River Aire",  # Same river as s1
+        river="River Aire",  # river as s1
         town=""
     )
     
@@ -110,31 +108,31 @@ def test_rivers_with_station():
         label="Station 4",
         coord=(52.3, 0.3),
         typical_range=(0.0, 1.0),
-        river=None,  # Station with no river
+        river=None,  #no river
         town=""
     )
     
     stations = [s1, s2, s3, s4]
     result = rivers_with_station(stations)
     
-    # Check that result is a set
+    #is a set?????
     assert isinstance(result, set)
     
-    # Check that duplicates are removed (River Aire appears twice but should only be in set once)
-    assert len(result) >= 2  # At least River Aire and River Cam
+    # check that duplicates are removed
+    assert len(result) >= 2
     
-    # Check that River Aire is in the set (only once despite two stations)
+    # check that Aire is in the set (only once despite two stations)
     assert "River Aire" in result
     assert "River Cam" in result
     
-    # Check that None is filtered out (stations with no river are excluded)
+    # check that None is filtered out (stations with no river are excluded)
     assert None not in result
 
 
 def test_stations_by_river():
     """Test stations_by_river function for task 1D"""
     
-    # Create test stations
+    # create test stations
     s1 = MonitoringStation(
         station_id="test-s-1",
         measure_id="test-m-1",
@@ -178,7 +176,7 @@ def test_stations_by_river():
     stations = [s1, s2, s3, s4]
     result = stations_by_river(stations)
     
-    # Check result is a dictionary
+    #is a dictionary??
     assert isinstance(result, dict)
     
     #check River Aire has 2 stations
@@ -187,12 +185,12 @@ def test_stations_by_river():
     assert s1 in result["River Aire"]
     assert s3 in result["River Aire"]
     
-    # Check River Cam has 1 station
+    #River Cam has 1 station as with the fake data
     assert "River Cam" in result
     assert len(result["River Cam"]) == 1
     assert s2 in result["River Cam"]
     
-    # Check all stations in River Aire are MonitoringStation objects
+    # Check all stations in Aire are correct objects
     for station in result["River Aire"]:
         assert isinstance(station, MonitoringStation)
     
