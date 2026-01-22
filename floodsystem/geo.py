@@ -17,4 +17,5 @@ def stations_by_distance(stations, p):
         ouput.append((station, station_distance))
     return sorted(ouput, key=lambda x: x[1]) #using lambda function to sort second entry in the tuple
     
-    
+def new f1():
+    return True
