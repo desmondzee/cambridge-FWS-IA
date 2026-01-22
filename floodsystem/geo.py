@@ -10,11 +10,17 @@ from .utils import sorted_by_key  # noqa
 from haversine import haversine
 
 def stations_by_distance(stations, p):
-    """Returns a list of stations and distances sorted by distance from a given point."""
-    ouput = []
+    """Returns a list of stations and distances sorted by distance from a given point.
+    
+    Args:
+        stations: lMonitoringStation objects
+        p: tuple of floats (latitude, longitude) for coordinate point
+        
+    output is (station, distance) tuples by distance from p
+    """
+    output = []
     for station in stations:
         station_distance = haversine(station.coord, p)
-        ouput.append((station, station_distance))
-    return sorted(ouput, key=lambda x: x[1]) #using lambda function to sort second entry in the tuple
-    
+        output.append((station, station_distance))
+    return sorted_by_key(output, 1)  # Sort by second entry (distance) in the tuple
     
