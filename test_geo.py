@@ -56,7 +56,7 @@ def test_stations_by_distance():
         assert len(item) == 2
         assert isinstance(item[0], MonitoringStation) #checking datatype
         assert isinstance(item[1], float)
-        assert item[1] >= 0  # Distance should be non-negative
+        assert item[1] >= 0  #Distance should be non-negative
     
     # Verify all stations are in the result
     result_stations = [s for s, _ in result]
@@ -64,7 +64,7 @@ def test_stations_by_distance():
     assert s2 in result_stations
     assert s3 in result_stations
     
-    # Check ordering: s1 < s2 < s3 from Cambridge
+    # Check distance to match: s1 < s2 < s3 from Cambridge
     assert result[0][0] == s1  # Closest
-    assert result[1][0] == s2  # Middle
+    assert result[1][0] == s2  # Second
     assert result[2][0] == s3  # Furthest
