@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #task 2F
 
 import matplotlib.pyplot as plt
@@ -44,7 +43,6 @@ def plot_water_level_with_fit(station, dates, levels, p):
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
-=======
 # Copyright (C) 2018 Garth N. Wells
 #
 # SPDX-License-Identifier: MIT
@@ -68,4 +66,3 @@ def plot_water_levels(station, dates, levels):
     ax.tick_params(axis="x", rotation=45)
     ax.legend()
     return ax
->>>>>>> e385394 (feat: completed ex 2c and 2e with unit testing)

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #task 2B 
 
 def stations_level_over_threshold(stations, tol):
@@ -13,7 +12,6 @@ def stations_level_over_threshold(stations, tol):
             over_threshold.append((station, rel_level))
     over_threshold.sort(key=lambda x: x[1], reverse=True)
     return over_threshold
-=======
 # Copyright (C) 2018 Garth N. Wells
 #
 # SPDX-License-Identifier: MIT
@@ -34,4 +32,3 @@ def stations_highest_rel_level(stations, N):
         with_level.append((rel, s))
     with_level.sort(key=lambda x: x[0], reverse=True)
     return [s for _, s in with_level[:N]]
->>>>>>> e385394 (feat: completed ex 2c and 2e with unit testing)
