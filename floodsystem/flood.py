@@ -34,7 +34,7 @@ def stations_highest_rel_level(stations, N):
     return [s for _, s in with_level[:N]]
 
 
-# Task 2G: town flood risk
+# 2G: town flood risk
 
 _RISK_ORDER = {"severe": 4, "high": 3, "moderate": 2, "low": 1}
 
@@ -52,9 +52,8 @@ def _relative_level_to_risk(rel):
 
 def towns_by_flood_risk(stations):
     """Return a list of (town_name, risk_level) for towns with at least one
-    station that has valid level data. Risk is the worst (highest) risk among
-    all stations in that town. Sorted by risk (severe first, then high,
-    moderate, low).
+    station that has valid level data. Risk is the highest risk among
+    all stations in that town
     """
     town_max_rel = {}
     for s in stations:
@@ -62,7 +61,7 @@ def towns_by_flood_risk(stations):
         if rel is None:
             continue
         town = s.town if s.town else "Unknown"
-        town_max_rel[town] = max(town_max_rel.get(town, rel), rel)
+        town_max_rel[town] = max(town_max_rel.get(town, rel), rel) #creates if not in dict
     result = [(town, _relative_level_to_risk(rel)) for town, rel in town_max_rel.items()]
     result.sort(key=lambda x: _RISK_ORDER[x[1]], reverse=True)
     return result
