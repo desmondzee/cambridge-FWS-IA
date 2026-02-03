@@ -4,7 +4,7 @@
 """Unit tests for the flood module."""
 
 from floodsystem.station import MonitoringStation
-from floodsystem.flood import stations_highest_rel_level
+from floodsystem.flood import stations_highest_rel_level, towns_by_flood_risk
 
 
 def test_stations_highest_rel_level_sorted_descending():
@@ -31,3 +31,20 @@ def test_stations_highest_rel_level_respects_N():
     stations = [make(0.1 * i) for i in range(5)]
     result = stations_highest_rel_level(stations, 2)
     assert len(result) == 2
+
+
+def test_towns_by_flood_risk():
+    """Town risk is worst station in town; sorted severe first."""
+    def make(town, level, low=0.0, high=1.0):
+        st = MonitoringStation("id", "mid", "S", (0, 0), (low, high), "R", town)
+        st.latest_level = level
+        return st
+    # A: rel 2.1 -> severe; B: rel 1.2 -> moderate; two in Town1 -> worst is severe
+    stations = [
+        make("Town1", 2.1),   # rel 2.1 -> severe
+        make("Town1", 0.5),   # rel 0.5 -> low (same town, max wins)
+        make("Town2", 1.2),   # rel 1.2 -> moderate
+    ]
+    result = towns_by_flood_risk(stations)
+    assert result[0] == ("Town1", "severe")
+    assert result[1] == ("Town2", "moderate")
