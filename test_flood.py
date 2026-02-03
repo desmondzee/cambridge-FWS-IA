@@ -39,11 +39,11 @@ def test_towns_by_flood_risk():
         st = MonitoringStation("id", "mid", "S", (0, 0), (low, high), "R", town)
         st.latest_level = level
         return st
-    # A: rel 2.1 -> severe; B: rel 1.2 -> moderate; two in Town1 -> worst is severe
+    # A: 2.1 severe B: 1.2 moderate
     stations = [
         make("Town1", 2.1),   # rel 2.1 -> severe
-        make("Town1", 0.5),   # rel 0.5 -> low (same town, max wins)
-        make("Town2", 1.2),   # rel 1.2 -> moderate
+        make("Town1", 0.5),   # 0.5 low (same town, max wins)
+        make("Town2", 1.2),   # 1.2 moderate
     ]
     result = towns_by_flood_risk(stations)
     assert result[0] == ("Town1", "severe")
