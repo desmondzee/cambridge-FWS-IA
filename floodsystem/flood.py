@@ -32,3 +32,37 @@ def stations_highest_rel_level(stations, N):
         with_level.append((rel, s))
     with_level.sort(key=lambda x: x[0], reverse=True)
     return [s for _, s in with_level[:N]]
+
+
+# Task 2G: town flood risk
+
+_RISK_ORDER = {"severe": 4, "high": 3, "moderate": 2, "low": 1}
+
+
+def _relative_level_to_risk(rel):
+    """Convert relative water level (fraction of typical range) to risk rating."""
+    if rel >= 2.0:
+        return "severe"
+    if rel >= 1.5:
+        return "high"
+    if rel >= 1.0:
+        return "moderate"
+    return "low"
+
+
+def towns_by_flood_risk(stations):
+    """Return a list of (town_name, risk_level) for towns with at least one
+    station that has valid level data. Risk is the worst (highest) risk among
+    all stations in that town. Sorted by risk (severe first, then high,
+    moderate, low).
+    """
+    town_max_rel = {}
+    for s in stations:
+        rel = s.relative_water_level()
+        if rel is None:
+            continue
+        town = s.town if s.town else "Unknown"
+        town_max_rel[town] = max(town_max_rel.get(town, rel), rel)
+    result = [(town, _relative_level_to_risk(rel)) for town, rel in town_max_rel.items()]
+    result.sort(key=lambda x: _RISK_ORDER[x[1]], reverse=True)
+    return result
