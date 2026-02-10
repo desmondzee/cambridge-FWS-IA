@@ -1,26 +1,25 @@
-#task 2F
-import numpy as np
+# Task 2F
 import matplotlib.dates as mdates
+import numpy as np
 
 def polyfit(dates, levels, p):
     """
     Computes a least-squares fit of a polynomial of degree p to water level data.
-    Returns a tuple: (numpy.poly1d polynomial object, float shift of the date axis).
+    Returns a tuple (polynomial object, shift).
     """
-    # Convert dates to floats (days since Gregorian origin)
+    # Convert list of dates into floating point numbers
     x = mdates.date2num(dates)
-    
-    if len(x) == 0:
-        raise ValueError("No date data provided.")
-    
-    # Shift the x-axis to the first date to avoid large numbers and improve conditioning
-    d0 = x[0]
-    x_shifted = x - d0
-    
-    # Perform the fit
-    p_coeff = np.polyfit(x_shifted, levels, p)
-    
-    # Create the polynomial object
+    y = np.array(levels)
+
+    # Shift the x-axis to avoid floating point errors (RankWarning)
+    # The fit is performed on (t - t0), not t.
+    shift = x[0]
+    x_shifted = x - shift
+
+    # Find coefficients of best-fit polynomial p(x)
+    p_coeff = np.polyfit(x_shifted, y, p)
+
+    # Convert coefficient into a polynomial object
     poly = np.poly1d(p_coeff)
-    
-    return poly, d0
+
+    return poly, shift
