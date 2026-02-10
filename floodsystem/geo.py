@@ -70,43 +70,34 @@ def stations_by_river(stations):
 
 from collections import defaultdict
 
-
+# Task 1E
 def rivers_by_station_number(stations, N):
     """
-    Return a list of (river_name, number_of_stations) tuples for the N rivers
-    with the greatest number of monitoring stations, sorted by number of stations
-    descending (ties broken alphabetically by river name).
-
-    If there are ties at the Nth position (multiple rivers with the same count
-    as the Nth river), include all of them.
+    Returns a list of the N rivers with the greatest number of monitoring stations.
+    Includes additional rivers if there is a tie at the Nth position.
     """
-    if N <= 0:
-        return []
-
-    # Count stations per river
-    river_counts = defaultdict(int)
+    # Count stations for each river
+    river_counts = {}
     for station in stations:
-        if station.river:  # Skip stations with no river name
+        if station.river in river_counts:
             river_counts[station.river] += 1
-
-    if not river_counts:
-        return []
-
-    # Sort: descending by count, then ascending by river name
-    sorted_rivers = sorted(river_counts.items(), key=lambda x: (-x[1], x[0]))
-
-    # Find the count of the Nth river (or the last if fewer than N)
-    if len(sorted_rivers) <= N:
-        return sorted_rivers
-
-    nth_count = sorted_rivers[N - 1][1]
-
-    # Collect all rivers with count >= nth_count (preserves sort order)
-    result = []
-    for river, count in sorted_rivers:
-        if count >= nth_count:
-            result.append((river, count))
         else:
-            break  # Since sorted descending, no need to continue
+            river_counts[station.river] = 1
 
+    # Convert to list of tuples and sort by count (descending)
+    # The lambda x: x[1] tells Python to sort by the count, not the name
+    sorted_rivers = sorted(river_counts.items(), key=lambda x: x[1], reverse=True)
+
+    # Handle the 'N' limit and ties
+    result = sorted_rivers[:N]
+    
+    # Check if subsequent rivers have the same count as the Nth river
+    if len(sorted_rivers) > N:
+        nth_count = result[-1][1]
+        for i in range(N, len(sorted_rivers)):
+            if sorted_rivers[i][1] == nth_count:
+                result.append(sorted_rivers[i])
+            else:
+                break
+                
     return result

@@ -3,9 +3,10 @@
 # SPDX-License-Identifier: MIT
 """Unit test for the geo module"""
 
-from floodsystem.geo import stations_within_radius, stations_by_distance, rivers_with_station, stations_by_river
+from floodsystem.geo import stations_within_radius, stations_by_distance, rivers_with_station, stations_by_river, rivers_by_station_number
 from floodsystem.station import MonitoringStation
 
+# Test for Task1C
 def test_stations_within_radius():
     """Test the stations_within_radius function for Task1C."""
     # Station A: Very close to (0,0)
@@ -18,20 +19,20 @@ def test_stations_within_radius():
     stations = [s1, s2, s3]
     centre = (0.0, 0.0)
     
-    # Only s1 should be inside
+    # small radius, only s1 should be inside
     res1 = stations_within_radius(stations, centre, 2.0)
     assert len(res1) == 1
     assert s1 in res1
     assert s2 not in res1
     
-    # s1 and s2 should be inside
+    # larger radius, s1 and s2 should be inside
     res2 = stations_within_radius(stations, centre, 20.0)
     assert len(res2) == 2
     assert s1 in res2
     assert s2 in res2
     assert s3 not in res2
 
-    #  None should be inside
+    #  tiny radius, none should be inside
     res3 = stations_within_radius(stations, centre, 0.0)
     assert len(res3) == 0
 
@@ -39,6 +40,50 @@ def test_stations_within_radius():
 
 if __name__ == "__main__":
     test_stations_within_radius()
+
+# Test for Task1E
+def test_rivers_by_station_number():
+    """Test the rivers_by_station_number function, specifically handling ties."""
+    
+    # River A: 3 stations
+    # River B: 2 stations
+    # River C: 2 stations (This creates a tie with River B)
+    # River D: 1 station
+    s1 = MonitoringStation("s1", "id1", "A1", (0,0), (0,1), "River A", "Town")
+    s2 = MonitoringStation("s2", "id2", "A2", (0,0), (0,1), "River A", "Town")
+    s3 = MonitoringStation("s3", "id3", "A3", (0,0), (0,1), "River A", "Town")
+    
+    s4 = MonitoringStation("s4", "id4", "B1", (0,0), (0,1), "River B", "Town")
+    s5 = MonitoringStation("s5", "id5", "B2", (0,0), (0,1), "River B", "Town")
+    
+    s6 = MonitoringStation("s6", "id6", "C1", (0,0), (0,1), "River C", "Town")
+    s7 = MonitoringStation("s7", "id7", "C2", (0,0), (0,1), "River C", "Town")
+    
+    s8 = MonitoringStation("s8", "id8", "D1", (0,0), (0,1), "River D", "Town")
+    
+    stations = [s1, s2, s3, s4, s5, s6, s7, s8]
+
+    # Test Case: N = 1, should only return River A (3 stations)
+    res1 = rivers_by_station_number(stations, 1)
+    assert len(res1) == 1
+    assert ("River A", 3) in res1
+
+    # Test Case: N = 2
+    # River A is first (3). River B and C both have (2).
+    # Since B and C tie for the 2nd spot, both must be included. Total length should be 3.
+    res2 = rivers_by_station_number(stations, 2)
+    assert len(res2) == 3
+    assert ("River A", 3) in res2
+    assert ("River B", 2) in res2
+    assert ("River C", 2) in res2
+    assert ("River D", 1) not in res2
+
+    print("Test rivers_by_station_number passed!")
+
+if __name__ == "__main__":
+    test_rivers_by_station_number()
+
+    
 
 def test_stations_by_distance():
     """Test stations_by_distance function for task 1B"""
