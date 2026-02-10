@@ -1,21 +1,27 @@
-#task 2B 
-
-def stations_level_over_threshold(stations, tol):
-    """Returns a list of tuples, each containing a station where the latest relative water level is over tol,
-    and the relative water level itself. The list is sorted by the relative level in descending order.
-    Only considers stations with consistent typical low/high data.
-    """
-    over_threshold = []
-    for station in stations:
-        rel_level = station.relative_water_level()
-        if rel_level is not None and rel_level > tol:
-            over_threshold.append((station, rel_level))
-    over_threshold.sort(key=lambda x: x[1], reverse=True)
-    return over_threshold
 # Copyright (C) 2018 Garth N. Wells
 #
 # SPDX-License-Identifier: MIT
 """This module contains flood risk analysis functions."""
+
+# Task 2D
+def stations_level_over_threshold(stations, tol):
+    """
+    Returns a list of (station, relative_water_level) tuples for stations
+    where the level is above 'tol', sorted in descending order.
+    """
+    over_threshold = []
+    
+    for station in stations:
+        rel_level = station.relative_water_level()
+        
+        # Only include if data is consistent and above the tolerance
+        if rel_level is not None and rel_level > tol:
+            over_threshold.append((station, rel_level))
+            
+    # Sort by relative level (the second item in the tuple) in descending order
+    over_threshold.sort(key=lambda x: x[1], reverse=True)
+    
+    return over_threshold
 
 
 def stations_highest_rel_level(stations, N):
