@@ -7,7 +7,23 @@ geographical data.
 """
 
 from .utils import sorted_by_key  # noqa
-from haversine import haversine
+from haversine import haversine # maths function to calculate distance between two points on the Earth
+
+# Task 1B
+def stations_within_radius(stations, centre, r):
+    """
+    Returns a list of all stations within radius r of a geographic coordinate centre.
+    """
+    within_radius = []
+    
+    for station in stations:
+        # Calculate distance between station coordinate and centre
+        distance = haversine(station.coord, centre)
+        
+        if distance <= r:
+            within_radius.append(station)
+            
+    return within_radius
 
 def stations_by_distance(stations, p):
     """Returns a list of stations and distances sorted by distance from a given point.
@@ -49,43 +65,7 @@ def stations_by_river(stations):
                 rivers[station.river] = []
             rivers[station.river].append(station)
     return rivers
-    
-from math import radians, sin, cos, sqrt, atan2
 
-def haversine(coord1, coord2):
-    """
-    Calculate the great-circle distance between two coordinates (lat, lon) in kilometres.
-    Uses the haversine formula.
-    """
-    # Unpack coordinates (lat1, lon1), (lat2, lon2)
-    lat1, lon1 = coord1
-    lat2, lon2 = coord2
-
-    # Convert to radians
-    lat1_rad = radians(lat1)
-    lon1_rad = radians(lon1)
-    lat2_rad = radians(lat2)
-    lon2_rad = radians(lon2)
-
-    # Differences
-    dlat = lat2_rad - lat1_rad
-    dlon = lon2_rad - lon1_rad
-
-    # Haversine formula
-    a = sin(dlat / 2)**2 + cos(lat1_rad) * cos(lat2_rad) * sin(dlon / 2)**2
-    c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    earth_radius_km = 6371.0
-
-    return earth_radius_km * c
-
-
-def stations_within_radius(stations, centre, r):
-    """
-    Return a list of MonitoringStation objects that lie within radius r (km)
-    of the geographic coordinate centre (lat, lon).
-    """
-    return [station for station in stations
-            if haversine(centre, station.coord) <= r]
 
 
 from collections import defaultdict

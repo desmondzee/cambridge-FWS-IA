@@ -5,13 +5,8 @@ from floodsystem.geo import stations_within_radius
 def run():
     """Demonstration for Task 1C: stations within radius."""
 
-    # Build list of all monitoring stations
     stations = build_station_list()
-
-    # Cambridge city centre coordinate (lat, lon)
     centre = (52.2053, 0.1218)
-
-    # Radius in km
     r = 10
 
     # Get the stations within the radius
@@ -19,8 +14,7 @@ def run():
 
     # Extract and sort the station names alphabetically
     station_names = sorted(station.name for station in stations_in_radius)
-
-    # Output
+    
     print(station_names)
 
 
