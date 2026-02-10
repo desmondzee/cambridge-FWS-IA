@@ -6,6 +6,39 @@
 from floodsystem.geo import stations_within_radius, stations_by_distance, rivers_with_station, stations_by_river
 from floodsystem.station import MonitoringStation
 
+def test_stations_within_radius():
+    """Test the stations_within_radius function for Task1C."""
+    # Station A: Very close to (0,0)
+    # Station B: Roughly 11km away from (0,0)
+    # Station C: Very far away
+    s1 = MonitoringStation("station1", "s1_id", "Label A", (0.01, 0.01), (0, 1), "River", "Town")
+    s2 = MonitoringStation("station2", "s2_id", "Label B", (0.1, 0.1), (0, 1), "River", "Town")
+    s3 = MonitoringStation("station3", "s3_id", "Label C", (1.0, 1.0), (0, 1), "River", "Town")
+    
+    stations = [s1, s2, s3]
+    centre = (0.0, 0.0)
+    
+    # Only s1 should be inside
+    res1 = stations_within_radius(stations, centre, 2.0)
+    assert len(res1) == 1
+    assert s1 in res1
+    assert s2 not in res1
+    
+    # s1 and s2 should be inside
+    res2 = stations_within_radius(stations, centre, 20.0)
+    assert len(res2) == 2
+    assert s1 in res2
+    assert s2 in res2
+    assert s3 not in res2
+
+    #  None should be inside
+    res3 = stations_within_radius(stations, centre, 0.0)
+    assert len(res3) == 0
+
+    print("Test stations_within_radius passed!")
+
+if __name__ == "__main__":
+    test_stations_within_radius()
 
 def test_stations_by_distance():
     """Test stations_by_distance function for task 1B"""
