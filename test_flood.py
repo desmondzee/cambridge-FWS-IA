@@ -4,7 +4,7 @@
 """Unit tests for the flood module."""
 
 from floodsystem.station import MonitoringStation
-from floodsystem.flood import stations_highest_rel_level, towns_by_flood_risk
+from floodsystem.flood import stations_highest_rel_level, stations_level_over_threshold, towns_by_flood_risk
 
 
 def test_stations_highest_rel_level_sorted_descending():
