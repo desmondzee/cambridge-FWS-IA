@@ -46,16 +46,21 @@ class MonitoringStation:
             return False
         return self.typical_range[0] < self.typical_range[1]
     
-    #task 2D
+    # Task 2D
     def relative_water_level(self):
-        """Returns the latest water level as a fraction of the typical range.
-        A ratio of 1.0 corresponds to a level at the typical high, and 0.0 to the typical low.
-        Returns None if the necessary data is unavailable or inconsistent.
         """
+        Returns the latest water level as a fraction of the typical range.
+        1.0 = typical high, 0.0 = typical low.
+        """
+        # Check if typical range data or latest level is missing/invalid
         if not self.typical_range_consistent() or self.latest_level is None:
             return None
+        
+        # Formula: (current - low) / (high - low)
         low, high = self.typical_range
-        return (self.latest_level - low) / (high - low)
+        relative_level = (self.latest_level - low) / (high - low)
+        
+        return relative_level
 
 def inconsistent_typical_range_stations(stations):
     """return a list of stations with inconsistent typical range"""
